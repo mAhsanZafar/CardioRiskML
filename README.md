@@ -86,6 +86,87 @@ This model supports:
 ```bash
 git clone https://github.com/mAhsanZafar/CardioRiskML.git
 cd CardioRiskML
+```
+### 🔹 2. Install Dependencies
+
+Use the provided requirements.txt:
+
+pip install -r requirements.txt
 
 
+---
+
+### 🔹 3. Generate Synthetic Dataset (Optional)
+
+If CardioPulse.csv is not present:
+
+python scripts/generate_cardiopulse.py
+
+
+---
+
+### 🔹 4. Run the Notebook
+
+Open the main notebook:
+
+jupyter notebook notebooks/CardioRiskML.ipynb
+
+
+---
+
+### 🔹 5. Use the Trained Model
+
+import joblib
+
+model = joblib.load("models/cardioguard_model.pkl")
+# Example: model.predict_proba(new_data)
+
+
+---
+
+### 📦 Model Serialization
+
+The trained model is saved under:
+
+models/cardioguard_model.pkl
+
+Load it with joblib to make predictions on new EHR data.
+
+
+---
+
+### ⚠️ Disclaimer
+
+This project uses synthetic data and is intended for research and learning purposes only.
+It should not be used for clinical decision-making without rigorous validation, clinical oversight, and compliance with healthcare regulations.
+
+
+---
+
+### 💻 Technologies Used
+
+The stack includes:
+
+Python 3.10+
+
+Pandas, NumPy
+
+Scikit-Learn
+
+XGBoost
+
+Matplotlib & Seaborn
+
+Joblib for model saving
+
+
+
+---
+
+### ✍️ Author
+
+Muhammad Ahsan Zafar
+AI/ML Developer & Healthcare AI Enthusiast
+
+---
 
