@@ -1,13 +1,20 @@
 /**
  * ELA Professional – Cart Shipping Progress Bar
- * Calculates remaining amount for free shipping threshold ($50)
- * and updates the progress bar in the cart drawer.
+ * Calculates remaining amount for free shipping threshold ($50 default).
+ * Threshold is read from the data-threshold attribute on .ela-shipping-bar,
+ * which is set in layout/theme.liquid from theme settings.
  */
 
 (function () {
   'use strict';
 
-  const ELA_SHIPPING_THRESHOLD = 5000; // $50.00 in cents
+  var DEFAULT_THRESHOLD = 5000; // $50.00 in cents (fallback)
+
+  function getThreshold() {
+    var bar = document.querySelector('.ela-shipping-bar');
+    var val = bar && parseInt(bar.dataset.threshold, 10);
+    return (val && val > 0) ? val : DEFAULT_THRESHOLD;
+  }
 
   /**
    * Formats a price in cents to a display string, e.g. "$12.50"
@@ -23,14 +30,15 @@
    * @param {number} cartTotal – cart total in cents
    */
   function renderShippingBar(cartTotal) {
-    const bar = document.querySelector('.ela-shipping-bar');
+    var bar = document.querySelector('.ela-shipping-bar');
     if (!bar) return;
 
-    const fill    = bar.querySelector('.ela-shipping-bar__fill');
-    const message = bar.querySelector('.ela-shipping-bar__message');
+    var fill    = bar.querySelector('.ela-shipping-bar__fill');
+    var message = bar.querySelector('.ela-shipping-bar__message');
     if (!fill || !message) return;
 
-    const remaining = ELA_SHIPPING_THRESHOLD - cartTotal;
+    var ELA_SHIPPING_THRESHOLD = getThreshold();
+    var remaining = ELA_SHIPPING_THRESHOLD - cartTotal;
 
     if (remaining <= 0) {
       fill.style.width = '100%';

@@ -71,8 +71,8 @@
     <h1 class="ela-product-info__title">{{ product.title }}</h1>
 
     <p class="ela-product-info__price" id="ela-product-price">
-      {%- if product.compare_at_price > product.price -%}
-        <s style="color:#999;margin-right:8px;font-size:0.9em;">{{ product.compare_at_price | money }}</s>
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+        <s style="color:#999;margin-right:8px;font-size:0.9em;">{{ current_variant.compare_at_price | money }}</s>
       {%- endif -%}
       <span id="ela-price-value">{{ current_variant.price | money }}</span>
     </p>
@@ -225,7 +225,7 @@
 
 <!-- ===================== YOU MAY ALSO LIKE ===================== -->
 {%- if recommendations.performed and recommendations.products_count > 0 -%}
-  <section class="ela-products-section" style="border-top:1px solid #e5e5e5;">
+  <section class="ela-products-section ela-recommendations-section" style="border-top:1px solid #e5e5e5;">
     <div class="ela-section-header">
       <h2 class="ela-section-title">You May Also Like</h2>
     </div>
@@ -335,7 +335,7 @@
 
 {%- comment -%} Load Shopify's product recommendations JS {%- endcomment -%}
 <script>
-  var recSection = document.querySelector('.recommendations-section');
+  var recSection = document.querySelector('.ela-recommendations-section');
   if (recSection) {
     var url = '{{ routes.product_recommendations_url }}'
             + '?section_id=product-recommendations'

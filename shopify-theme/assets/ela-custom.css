@@ -336,7 +336,6 @@ hr,
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
-  loading: lazy;
 }
 
 .ela-product-card:hover .ela-product-card__image {
@@ -1388,10 +1387,8 @@ hr,
     align-items: center;
   }
 
-  /* Hide main ATC when sticky is showing */
-  .ela-atc-wrap {
-    display: none;
-  }
+  /* Hide main ATC on mobile only after user has scrolled; initially visible */
+  /* The sticky ATC observer handles toggling visibility at runtime */
 
   /* Bundles */
   .ela-bundles-grid {

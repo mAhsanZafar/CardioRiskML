@@ -157,7 +157,11 @@
     </div>
 
     <!-- Shipping progress bar -->
-    <div class="ela-shipping-bar" aria-live="polite">
+    <div
+      class="ela-shipping-bar"
+      aria-live="polite"
+      data-threshold="{{ settings.free_shipping_threshold | times: 100 | round }}"
+    >
       <p class="ela-shipping-bar__message">Add <strong>$50.00</strong> more for free shipping</p>
       <div class="ela-shipping-bar__track">
         <div class="ela-shipping-bar__fill" style="width:0%;"></div>

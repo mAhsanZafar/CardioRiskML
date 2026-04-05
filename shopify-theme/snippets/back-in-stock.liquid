@@ -45,8 +45,8 @@
   </p>
 </div>
 
-{%- comment -%} Back-In-Stock handler – included once per page {%- endcomment -%}
-{%- unless request.page_type == 'product' and request.path contains 'ela-bis-init' -%}
+{%- comment -%} Back-In-Stock handler – included once per page via a flag in globals {%- endcomment -%}
+{%- unless content_for_layout contains 'ELABackInStock' -%}
 <script>
   window.ELABackInStock = window.ELABackInStock || {
     submit: function (e, form) {
