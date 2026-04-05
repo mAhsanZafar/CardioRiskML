@@ -1,0 +1,349 @@
+{% comment %}
+  ELA Professional – Custom Product Page Template
+  Assign this template to all 4 ELA products.
+  
+  Required metafields (create in Shopify Admin → Settings → Custom Data):
+    Namespace: custom
+    - short_description  (type: single_line_text or richtext)
+    - ingredients        (type: json – array of { name, benefit })
+    - how_to_use         (type: json – array of strings)
+{% endcomment %}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="ela-product-layout">
+
+  <!-- ===================== IMAGE GALLERY ===================== -->
+  <div class="ela-gallery" id="ela-gallery">
+    <div class="ela-gallery__main" id="ela-gallery-main">
+      {%- if product.featured_image -%}
+        <img
+          id="ela-gallery-main-img"
+          src="{{ product.featured_image | image_url: width: 900 }}"
+          srcset="
+            {{ product.featured_image | image_url: width: 600 }} 600w,
+            {{ product.featured_image | image_url: width: 900 }} 900w,
+            {{ product.featured_image | image_url: width: 1200 }} 1200w
+          "
+          sizes="(max-width: 768px) 100vw, 50vw"
+          alt="{{ product.featured_image.alt | escape | default: product.title | escape }}"
+          loading="eager"
+          width="{{ product.featured_image.width }}"
+          height="{{ product.featured_image.height }}"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: '' }}
+      {%- endif -%}
+    </div>
+
+    {%- if product.images.size > 1 -%}
+      <div class="ela-gallery__thumbs" role="list">
+        {%- for image in product.images limit: 5 -%}
+          <button
+            class="ela-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+            role="listitem"
+            aria-label="View image {{ forloop.index }}"
+            data-full-src="{{ image | image_url: width: 900 }}"
+            data-srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w"
+            onclick="ELAGallery.setImage(this)"
+          >
+            <img
+              src="{{ image | image_url: width: 150 }}"
+              alt="{{ image.alt | escape | default: product.title | escape }}"
+              loading="lazy"
+              width="{{ image.width }}"
+              height="{{ image.height }}"
+            >
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+  <!-- end gallery -->
+
+  <!-- ===================== PRODUCT INFO ===================== -->
+  <div class="ela-product-info">
+
+    {%- if product.type != blank -%}
+      <p class="ela-product-info__collection">{{ product.type | escape }}</p>
+    {%- endif -%}
+
+    <h1 class="ela-product-info__title">{{ product.title }}</h1>
+
+    <p class="ela-product-info__price" id="ela-product-price">
+      {%- if product.compare_at_price > product.price -%}
+        <s style="color:#999;margin-right:8px;font-size:0.9em;">{{ product.compare_at_price | money }}</s>
+      {%- endif -%}
+      <span id="ela-price-value">{{ current_variant.price | money }}</span>
+    </p>
+
+    {%- if product.metafields.custom.short_description != blank -%}
+      <div class="ela-product-info__short-desc">
+        {{ product.metafields.custom.short_description.value }}
+      </div>
+    {%- elsif product.description != blank -%}
+      <div class="ela-product-info__short-desc">
+        {{ product.description | strip_html | truncatewords: 40 }}
+      </div>
+    {%- endif -%}
+
+    <!-- ---- Add to Cart ---- -->
+    {%- if product.available -%}
+      <form action="/cart/add" method="post" class="ela-atc-wrap" id="ela-atc-form">
+        {%- if product.variants.size > 1 -%}
+          <label for="ela-variant-select" class="visually-hidden">Variant</label>
+          <select
+            id="ela-variant-select"
+            name="id"
+            style="width:100%;padding:12px 14px;border:1px solid #e5e5e5;font-family:inherit;font-size:13px;margin-bottom:12px;min-height:48px;"
+            onchange="ELAProduct.updateVariant(this)"
+          >
+            {%- for variant in product.variants -%}
+              <option
+                value="{{ variant.id }}"
+                {% unless variant.available %}disabled{% endunless %}
+                {% if variant == current_variant %}selected{% endif %}
+              >
+                {{ variant.title }}
+                {%- unless variant.available %} – Sold out{%- endunless -%}
+              </option>
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {%- endif -%}
+
+        <button type="submit" class="ela-btn ela-atc-btn" id="ela-atc-btn">
+          Add to Cart
+        </button>
+      </form>
+    {%- else -%}
+      <div class="ela-atc-wrap">
+        <button class="ela-btn ela-atc-btn" disabled style="opacity:0.5;cursor:not-allowed;">
+          Sold Out
+        </button>
+        {% render 'back-in-stock', product: product %}
+      </div>
+    {%- endif -%}
+
+    <!-- ---- Accordion: Ingredients / How To Use ---- -->
+    <div class="ela-accordion" id="ela-accordion">
+
+      {%- if product.metafields.custom.ingredients != blank -%}
+        <div class="ela-accordion__item">
+          <button
+            class="ela-accordion__trigger"
+            aria-expanded="false"
+            aria-controls="ela-acc-ingredients"
+            onclick="ELAAccordion.toggle(this)"
+          >
+            Ingredients
+            <span class="ela-accordion__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="ela-accordion__body" id="ela-acc-ingredients" role="region">
+            <div class="ela-accordion__content">
+              {% render 'product-ingredients', product: product %}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if product.metafields.custom.how_to_use != blank -%}
+        <div class="ela-accordion__item">
+          <button
+            class="ela-accordion__trigger"
+            aria-expanded="false"
+            aria-controls="ela-acc-howtouse"
+            onclick="ELAAccordion.toggle(this)"
+          >
+            How to Use
+            <span class="ela-accordion__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="ela-accordion__body" id="ela-acc-howtouse" role="region">
+            <div class="ela-accordion__content">
+              {% render 'product-how-to-use', product: product %}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if product.description != blank -%}
+        <div class="ela-accordion__item">
+          <button
+            class="ela-accordion__trigger"
+            aria-expanded="false"
+            aria-controls="ela-acc-desc"
+            onclick="ELAAccordion.toggle(this)"
+          >
+            Product Description
+            <span class="ela-accordion__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="ela-accordion__body" id="ela-acc-desc" role="region">
+            <div class="ela-accordion__content">{{ product.description }}</div>
+          </div>
+        </div>
+      {%- endif -%}
+
+    </div>
+    <!-- end accordion -->
+
+  </div>
+  <!-- end product info -->
+
+</div>
+<!-- end product layout -->
+
+<!-- ===================== STICKY ATC (mobile) ===================== -->
+{%- if product.available -%}
+  <div class="ela-sticky-atc" id="ela-sticky-atc" aria-hidden="true">
+    <div class="ela-sticky-atc__inner">
+      <span class="ela-sticky-atc__title">{{ product.title }}</span>
+      <button
+        class="ela-btn ela-sticky-atc__btn"
+        onclick="document.getElementById('ela-atc-form').requestSubmit()"
+        aria-label="Add {{ product.title | escape }} to cart"
+      >
+        Add to Cart
+      </button>
+    </div>
+  </div>
+{%- endif -%}
+
+<!-- ===================== REVIEWS (Judge.me placeholder) ===================== -->
+<div class="ela-reviews-section">
+  <div class="ela-section-header">
+    <h2 class="ela-section-title">Customer Reviews</h2>
+  </div>
+  {%- comment -%}
+    Judge.me app renders reviews here automatically after installation.
+    The div below is the standard Judge.me placement:
+  {%- endcomment -%}
+  <div id="judgeme_product_reviews" class="jdgm-widget jdgm-review-widget" data-id="{{ product.id }}">
+    {{ product.metafields.judgeme.badge }}
+  </div>
+</div>
+
+<!-- ===================== YOU MAY ALSO LIKE ===================== -->
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+  <section class="ela-products-section" style="border-top:1px solid #e5e5e5;">
+    <div class="ela-section-header">
+      <h2 class="ela-section-title">You May Also Like</h2>
+    </div>
+    <div class="ela-products-grid">
+      {%- for rec in recommendations.products limit: 4 -%}
+        <div class="ela-product-card">
+          <a href="{{ rec.url }}" class="ela-product-card__image-wrap" aria-label="{{ rec.title | escape }}">
+            {%- if rec.featured_image -%}
+              <img
+                class="ela-product-card__image"
+                src="{{ rec.featured_image | image_url: width: 600 }}"
+                alt="{{ rec.featured_image.alt | escape | default: rec.title | escape }}"
+                loading="lazy"
+                width="{{ rec.featured_image.width }}"
+                height="{{ rec.featured_image.height }}"
+              >
+            {%- endif -%}
+          </a>
+          <div class="ela-product-card__info">
+            <a href="{{ rec.url }}">
+              <h3 class="ela-product-card__title">{{ rec.title | escape }}</h3>
+            </a>
+            <p class="ela-product-card__price">{{ rec.price | money }}</p>
+            <a href="{{ rec.url }}" class="ela-btn ela-product-card__btn">Shop Now</a>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+{%- endif -%}
+
+<!-- ===================== PAGE SCRIPTS ===================== -->
+<script>
+  /* Gallery thumbnail switcher */
+  window.ELAGallery = {
+    setImage: function (btn) {
+      var mainImg = document.getElementById('ela-gallery-main-img');
+      if (mainImg && btn.dataset.fullSrc) {
+        mainImg.src     = btn.dataset.fullSrc;
+        mainImg.srcset  = btn.dataset.srcset || '';
+      }
+      document.querySelectorAll('.ela-gallery__thumb').forEach(function (t) {
+        t.classList.remove('is-active');
+      });
+      btn.classList.add('is-active');
+    }
+  };
+
+  /* Accordion */
+  window.ELAAccordion = {
+    toggle: function (trigger) {
+      var item = trigger.closest('.ela-accordion__item');
+      var isOpen = item.classList.contains('is-open');
+      /* Close all */
+      document.querySelectorAll('.ela-accordion__item.is-open').forEach(function (open) {
+        open.classList.remove('is-open');
+        open.querySelector('.ela-accordion__trigger').setAttribute('aria-expanded', 'false');
+      });
+      /* Open clicked if it was closed */
+      if (!isOpen) {
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    }
+  };
+
+  /* Variant price update */
+  window.ELAProduct = {
+    updateVariant: function (select) {
+      var priceEl = document.getElementById('ela-price-value');
+      var atcBtn  = document.getElementById('ela-atc-btn');
+      var opt     = select.options[select.selectedIndex];
+
+      if (priceEl) {
+        /* Fetch variant data to get formatted price */
+        fetch('/variants/' + select.value + '.js')
+          .then(function (r) { return r.json(); })
+          .then(function (v) {
+            var cents   = v.price;
+            var dollars = (cents / 100).toFixed(2);
+            priceEl.textContent = '$' + dollars;
+            if (atcBtn) {
+              atcBtn.disabled  = !v.available;
+              atcBtn.textContent = v.available ? 'Add to Cart' : 'Sold Out';
+            }
+          });
+      }
+    }
+  };
+
+  /* Sticky ATC: show when main ATC is scrolled out of view */
+  (function () {
+    var stickyAtc = document.getElementById('ela-sticky-atc');
+    var atcWrap   = document.getElementById('ela-atc-form');
+    if (!stickyAtc || !atcWrap) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        stickyAtc.style.display = entry.isIntersecting ? 'none' : 'flex';
+        stickyAtc.setAttribute('aria-hidden', entry.isIntersecting ? 'true' : 'false');
+      });
+    }, { threshold: 0 });
+
+    observer.observe(atcWrap);
+  })();
+</script>
+
+{%- comment -%} Load Shopify's product recommendations JS {%- endcomment -%}
+<script>
+  var recSection = document.querySelector('.recommendations-section');
+  if (recSection) {
+    var url = '{{ routes.product_recommendations_url }}'
+            + '?section_id=product-recommendations'
+            + '&product_id={{ product.id }}'
+            + '&limit=4';
+    fetch(url)
+      .then(function (r) { return r.text(); })
+      .then(function (html) { recSection.innerHTML = html; })
+      .catch(function () {});
+  }
+</script>

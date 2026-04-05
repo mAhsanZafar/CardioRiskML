@@ -1,0 +1,79 @@
+{% comment %}
+  ELA Professional – Product How-To-Use Snippet
+  Renders the "How to Use" instructions from a product metafield.
+  
+  Usage:
+    {% render 'product-how-to-use', product: product %}
+  
+  Expected metafield: product.metafields.custom.how_to_use (type: json or richtext)
+  JSON format: ["Step one text", "Step two text", ...]
+  Fallback: plain richtext/string metafield displayed as prose.
+{% endcomment %}
+
+{%- liquid
+  assign how_to_raw = product.metafields.custom.how_to_use
+-%}
+
+{%- if how_to_raw != blank -%}
+  <div class="ela-how-to-use">
+    {%- assign steps = how_to_raw.value -%}
+
+    {%- if steps.first -%}
+      {%- comment -%} Structured JSON metafield – array of strings {%- endcomment -%}
+      <ol class="ela-how-to-use__list" aria-label="How to use">
+        {%- for step in steps -%}
+          <li class="ela-how-to-use__step">
+            <span class="ela-how-to-use__number">{{ forloop.index }}</span>
+            <span class="ela-how-to-use__text">{{ step | escape }}</span>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- else -%}
+      {%- comment -%} Fallback: richtext or plain text {%- endcomment -%}
+      <div class="ela-how-to-use__text">
+        {{ how_to_raw.value }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <style>
+    .ela-how-to-use__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      counter-reset: step-counter;
+    }
+    .ela-how-to-use__step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--ela-grey-dark, #333);
+    }
+    .ela-how-to-use__number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--ela-black, #000);
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--ela-font-body, 'Montserrat', sans-serif);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .ela-how-to-use__text {
+      flex: 1;
+    }
+    .ela-how-to-use__text-prose {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--ela-grey-dark, #333);
+    }
+  </style>
+{%- endif -%}

@@ -1,0 +1,109 @@
+{
+  "name": "ELA Professional Theme",
+  "settings": [
+    {
+      "name": "Logo & Favicon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image",
+          "info": "Recommended max height: 60px. SVG or transparent PNG preferred."
+        },
+        {
+          "type": "image_picker",
+          "id": "favicon",
+          "label": "Favicon",
+          "info": "32×32px PNG"
+        }
+      ]
+    },
+    {
+      "name": "Colors",
+      "settings": [
+        {
+          "type": "color",
+          "id": "color_background",
+          "label": "Background color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Body text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "color_button",
+          "label": "Button background",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "color_button_text",
+          "label": "Button text",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "color_border",
+          "label": "Border color",
+          "default": "#E5E5E5"
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "settings": [
+        {
+          "type": "font_picker",
+          "id": "font_heading",
+          "label": "Heading font",
+          "default": "cormorant_garamond_n3"
+        },
+        {
+          "type": "font_picker",
+          "id": "font_body",
+          "label": "Body font",
+          "default": "montserrat_n4"
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "settings": [
+        {
+          "type": "range",
+          "id": "free_shipping_threshold",
+          "label": "Free shipping threshold (USD)",
+          "min": 0,
+          "max": 200,
+          "step": 5,
+          "unit": "$",
+          "default": 50
+        }
+      ]
+    },
+    {
+      "name": "Social",
+      "settings": [
+        {
+          "type": "text",
+          "id": "social_instagram",
+          "label": "Instagram URL"
+        },
+        {
+          "type": "text",
+          "id": "social_facebook",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "text",
+          "id": "social_tiktok",
+          "label": "TikTok URL"
+        }
+      ]
+    }
+  ]
+}

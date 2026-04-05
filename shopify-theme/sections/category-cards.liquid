@@ -1,0 +1,88 @@
+{% comment %}
+  ELA Professional – Category Cards Section
+  Two 50/50 grid tiles: SKINCARE and HAIRCARE
+{% endcomment %}
+
+<div class="ela-categories">
+  {%- for block in section.blocks -%}
+    <a
+      href="{{ block.settings.link | default: '/collections/all' }}"
+      class="ela-category-card"
+      {{ block.shopify_attributes }}
+    >
+      {%- if block.settings.image -%}
+        <img
+          class="ela-category-card__image"
+          src="{{ block.settings.image | image_url: width: 900 }}"
+          srcset="
+            {{ block.settings.image | image_url: width: 450 }} 450w,
+            {{ block.settings.image | image_url: width: 900 }} 900w,
+            {{ block.settings.image | image_url: width: 1200 }} 1200w
+          "
+          sizes="50vw"
+          alt="{{ block.settings.image.alt | escape | default: block.settings.title }}"
+          loading="lazy"
+          width="{{ block.settings.image.width }}"
+          height="{{ block.settings.image.height }}"
+        >
+      {%- else -%}
+        <div style="position:absolute;inset:0;background:#1a1a1a;"></div>
+      {%- endif -%}
+
+      <div class="ela-category-card__label">
+        <span class="ela-category-card__title">{{ block.settings.title | escape }}</span>
+        <span class="ela-category-card__cta">{{ block.settings.cta_text | default: 'Explore' | escape }}</span>
+      </div>
+    </a>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "ELA Category Cards",
+  "tag": "section",
+  "class": "ela-section-categories",
+  "min_blocks": 1,
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category title",
+          "default": "Skincare"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA text",
+          "default": "Explore"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Collection link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELA Category Cards",
+      "category": "ELA Professional",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Skincare", "cta_text": "Explore Skincare" } },
+        { "type": "category", "settings": { "title": "Haircare", "cta_text": "Explore Haircare" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

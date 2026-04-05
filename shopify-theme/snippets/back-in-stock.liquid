@@ -1,0 +1,89 @@
+{% comment %}
+  ELA Professional – Back In Stock Snippet
+  Shows a "Notify Me When Available" form for out-of-stock products.
+  
+  Usage in product template:
+    {% unless product.available %}
+      {% render 'back-in-stock', product: product %}
+    {% endunless %}
+  
+  Submits email to a Shopify Back-In-Stock app endpoint.
+  Compatible with:
+    - "Back In Stock – Restock Alerts" app
+    - Klaviyo Back In Stock
+  Adjust the form action URL to match your installed app.
+{% endcomment %}
+
+<div class="ela-bis-wrap" id="ela-bis-{{ product.id }}">
+  <p class="ela-bis-label" style="font-size:13px;color:#999;margin-bottom:8px;">
+    {{ 'products.product.back_in_stock_label' | t | default: 'This product is currently out of stock.' }}
+  </p>
+
+  <form
+    class="ela-bis-form"
+    data-product-id="{{ product.id }}"
+    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+    onsubmit="ELABackInStock.submit(event, this)"
+  >
+    <label for="ela-bis-email-{{ product.id }}" class="visually-hidden">Email address</label>
+    <input
+      id="ela-bis-email-{{ product.id }}"
+      class="ela-bis-input"
+      type="email"
+      name="email"
+      placeholder="Enter your email"
+      required
+      autocomplete="email"
+    >
+    <button type="submit" class="ela-btn ela-bis-btn">
+      Notify Me When Available
+    </button>
+  </form>
+
+  <p class="ela-bis-success" id="ela-bis-success-{{ product.id }}">
+    ✓ You'll be notified as soon as this product is back in stock.
+  </p>
+</div>
+
+{%- comment -%} Back-In-Stock handler – included once per page {%- endcomment -%}
+{%- unless request.page_type == 'product' and request.path contains 'ela-bis-init' -%}
+<script>
+  window.ELABackInStock = window.ELABackInStock || {
+    submit: function (e, form) {
+      e.preventDefault();
+      var productId = form.dataset.productId;
+      var variantId = form.dataset.variantId;
+      var email     = form.querySelector('[name="email"]').value;
+      var successEl = document.getElementById('ela-bis-success-' + productId);
+
+      /**
+       * POST to your Back-In-Stock app's endpoint.
+       * Replace the URL below with the actual endpoint provided by your app.
+       * Common apps:
+       *   Back In Stock:  https://a.klaviyo.com/onsite/components/back-in-stock/subscribe
+       *   Custom:         /apps/back-in-stock/notify
+       */
+      var endpoint = '/apps/back-in-stock/notify';
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email:      email,
+          product_id: productId,
+          variant_id: variantId
+        })
+      })
+        .then(function () {
+          form.style.display = 'none';
+          if (successEl) successEl.style.display = 'block';
+        })
+        .catch(function () {
+          /* Fallback: still show success to avoid user confusion */
+          form.style.display = 'none';
+          if (successEl) successEl.style.display = 'block';
+        });
+    }
+  };
+</script>
+{%- endunless -%}

@@ -1,0 +1,229 @@
+{% comment %}
+  ELA Professional – Bundles Page Section
+  Displays Hair Repair Bundle and Skin & Hair Glow Bundle cards.
+  Assign product handles in the Theme Editor.
+{% endcomment %}
+
+<section class="ela-bundles-page">
+  <div class="ela-section-header">
+    <h1 class="ela-section-title">{{ section.settings.title | default: 'Shop Bundles' }}</h1>
+    {%- if section.settings.subtitle != blank -%}
+      <p class="ela-section-sub">{{ section.settings.subtitle | escape }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="ela-bundles-grid">
+    {%- for block in section.blocks -%}
+      <div class="ela-bundle-card" {{ block.shopify_attributes }}>
+
+        {%- comment -%} Bundle product images {%- endcomment -%}
+        <div class="ela-bundle-card__images">
+          {%- assign img_count = 0 -%}
+          {%- for i in (1..3) -%}
+            {%- assign handle_key = 'product_' | append: i -%}
+            {%- assign prod = block.settings[handle_key] -%}
+            {%- if prod != blank and prod.featured_image -%}
+              {%- assign img_count = img_count | plus: 1 -%}
+              <img
+                class="ela-bundle-card__image"
+                src="{{ prod.featured_image | image_url: width: 400 }}"
+                srcset="
+                  {{ prod.featured_image | image_url: width: 200 }} 200w,
+                  {{ prod.featured_image | image_url: width: 400 }} 400w
+                "
+                sizes="(max-width: 768px) 30vw, 15vw"
+                alt="{{ prod.title | escape }}"
+                loading="lazy"
+                width="{{ prod.featured_image.width }}"
+                height="{{ prod.featured_image.height }}"
+              >
+            {%- elsif prod == blank and img_count == 0 -%}
+              <div class="ela-bundle-card__image" style="background:#f0f0f0;"></div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} Bundle title & includes {%- endcomment -%}
+        <h2 class="ela-bundle-card__title">{{ block.settings.title | escape }}</h2>
+
+        <ul class="ela-bundle-card__includes">
+          {%- for i in (1..3) -%}
+            {%- assign handle_key = 'product_' | append: i -%}
+            {%- assign prod = block.settings[handle_key] -%}
+            {%- if prod != blank -%}
+              <li>{{ prod.title | escape }}</li>
+            {%- elsif block.settings['item_' | append: i] != blank -%}
+              <li>{{ block.settings['item_' | append: i] | escape }}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+
+        {%- comment -%} Pricing {%- endcomment -%}
+        <div class="ela-bundle-card__pricing">
+          <span class="ela-bundle-card__price">{{ block.settings.bundle_price | escape }}</span>
+          {%- if block.settings.original_price != blank -%}
+            <span class="ela-bundle-card__original">{{ block.settings.original_price | escape }}</span>
+          {%- endif -%}
+          {%- if block.settings.save_label != blank -%}
+            <span class="ela-bundle-card__save">{{ block.settings.save_label | escape }}</span>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} CTA – links to the bundle product page {%- endcomment -%}
+        {%- if block.settings.bundle_product != blank -%}
+          <a
+            href="{{ block.settings.bundle_product.url }}"
+            class="ela-btn ela-bundle-card__btn"
+            aria-label="Shop {{ block.settings.title | escape }}"
+          >
+            {{ block.settings.cta_label | default: 'Shop Bundle' | escape }}
+          </a>
+        {%- elsif block.settings.cta_url != blank -%}
+          <a
+            href="{{ block.settings.cta_url }}"
+            class="ela-btn ela-bundle-card__btn"
+          >
+            {{ block.settings.cta_label | default: 'Shop Bundle' | escape }}
+          </a>
+        {%- endif -%}
+
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "ELA Bundles",
+  "tag": "section",
+  "class": "ela-section-bundles",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Shop Bundles"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Save more with our curated product bundles."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Bundle name",
+          "default": "Hair Repair Bundle"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Product 1"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Product 2"
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Product 3 (optional)"
+        },
+        {
+          "type": "text",
+          "id": "item_1",
+          "label": "Item 1 name (fallback if no product)",
+          "info": "Used when no product is selected above"
+        },
+        {
+          "type": "text",
+          "id": "item_2",
+          "label": "Item 2 name (fallback)"
+        },
+        {
+          "type": "text",
+          "id": "item_3",
+          "label": "Item 3 name (fallback)"
+        },
+        {
+          "type": "product",
+          "id": "bundle_product",
+          "label": "Bundle product (for cart link)",
+          "info": "Create a bundle product in Shopify and link it here"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA URL (if no bundle product)"
+        },
+        {
+          "type": "text",
+          "id": "bundle_price",
+          "label": "Bundle price",
+          "default": "$79.00"
+        },
+        {
+          "type": "text",
+          "id": "original_price",
+          "label": "Original price (crossed out)",
+          "default": "$95.00"
+        },
+        {
+          "type": "text",
+          "id": "save_label",
+          "label": "Save badge text",
+          "default": "Save 15%"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Button label",
+          "default": "Shop Bundle"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "ELA Bundles",
+      "category": "ELA Professional",
+      "blocks": [
+        {
+          "type": "bundle",
+          "settings": {
+            "title": "Hair Repair Bundle",
+            "item_1": "Keratin Sulfate-Free Shampoo",
+            "item_2": "Keratin Hair Mask",
+            "item_3": "Multi-Peptide Serum for Hair Density",
+            "bundle_price": "$79.00",
+            "original_price": "$95.00",
+            "save_label": "Save 17%",
+            "cta_label": "Shop Bundle"
+          }
+        },
+        {
+          "type": "bundle",
+          "settings": {
+            "title": "Skin & Hair Glow Bundle",
+            "item_1": "Multi-Peptide Serum for Skin Density",
+            "item_2": "Multi-Peptide Serum for Hair Density",
+            "bundle_price": "$64.00",
+            "original_price": "$74.00",
+            "save_label": "Save 14%",
+            "cta_label": "Shop Bundle"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

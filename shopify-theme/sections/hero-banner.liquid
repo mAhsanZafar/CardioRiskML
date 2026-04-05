@@ -1,0 +1,111 @@
+{% comment %}
+  ELA Professional – Hero Banner Section
+  Displays a full-width hero with headline, sub-text, and CTA.
+  Upload your hero image via Shopify Theme Editor.
+{% endcomment %}
+
+<section class="ela-hero" style="{% if section.settings.min_height %}min-height: {{ section.settings.min_height }}vh;{% endif %}">
+  {%- if section.settings.image -%}
+    <img
+      class="ela-hero__image"
+      src="{{ section.settings.image | image_url: width: 2000 }}"
+      srcset="
+        {{ section.settings.image | image_url: width: 600 }} 600w,
+        {{ section.settings.image | image_url: width: 1000 }} 1000w,
+        {{ section.settings.image | image_url: width: 1500 }} 1500w,
+        {{ section.settings.image | image_url: width: 2000 }} 2000w
+      "
+      sizes="100vw"
+      alt="{{ section.settings.image.alt | escape | default: 'ELA Professional' }}"
+      loading="eager"
+      fetchpriority="high"
+      width="{{ section.settings.image.width }}"
+      height="{{ section.settings.image.height }}"
+    >
+  {%- else -%}
+    {%- comment -%} Placeholder gradient when no image is set {%- endcomment -%}
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#111 0%,#444 100%);"></div>
+  {%- endif -%}
+
+  <div class="ela-hero__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="ela-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+
+    <h1 class="ela-hero__headline">
+      {{ section.settings.heading | default: 'ELA Professional – Science-Backed Beauty' }}
+    </h1>
+
+    {%- if section.settings.subheading != blank -%}
+      <p class="ela-hero__sub">{{ section.settings.subheading | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.cta_label != blank -%}
+      <a
+        href="{{ section.settings.cta_url | default: '/collections/all' }}"
+        class="ela-hero__cta"
+      >
+        {{ section.settings.cta_label | escape }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "ELA Hero Banner",
+  "tag": "section",
+  "class": "ela-section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height (vh)",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "default": 90
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "ELA Professional"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Headline",
+      "default": "<p>ELA Professional – Science-Backed Beauty</p>"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Professional skincare & haircare for all skin and hair types."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELA Hero Banner",
+      "category": "ELA Professional"
+    }
+  ]
+}
+{% endschema %}

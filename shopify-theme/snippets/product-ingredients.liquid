@@ -1,0 +1,77 @@
+{% comment %}
+  ELA Professional – Product Ingredients Snippet
+  Renders the ingredient list from a product metafield.
+  
+  Usage in a product template:
+    {% render 'product-ingredients', product: product %}
+  
+  Expected metafield: product.metafields.custom.ingredients (type: json)
+  Format: [{ "name": "Peptides", "benefit": "Improve skin density" }, ...]
+  Fallback: plain richtext metafield
+{% endcomment %}
+
+{%- liquid
+  assign ingredients_raw = product.metafields.custom.ingredients
+-%}
+
+{%- if ingredients_raw != blank -%}
+  <div class="ela-ingredients">
+    {%- assign parsed = ingredients_raw.value -%}
+
+    {%- if parsed.first.name -%}
+      {%- comment -%} Structured JSON metafield – array of { name, benefit } {%- endcomment -%}
+      <ul class="ela-ingredients__list" aria-label="Ingredients">
+        {%- for ingredient in parsed -%}
+          <li class="ela-ingredients__item">
+            <span class="ela-ingredients__name">{{ ingredient.name | escape }}</span>
+            {%- if ingredient.benefit != blank -%}
+              <span class="ela-ingredients__separator"> — </span>
+              <span class="ela-ingredients__benefit">{{ ingredient.benefit | escape }}</span>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      {%- comment -%} Fallback: richtext or plain text metafield {%- endcomment -%}
+      <div class="ela-ingredients__text">
+        {{ ingredients_raw.value }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <style>
+    .ela-ingredients__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ela-ingredients__item {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ela-grey-dark, #333);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--ela-grey-light, #e5e5e5);
+    }
+    .ela-ingredients__item:last-child {
+      border-bottom: none;
+    }
+    .ela-ingredients__name {
+      font-weight: 600;
+      color: var(--ela-black, #000);
+    }
+    .ela-ingredients__separator {
+      color: var(--ela-grey-mid, #999);
+    }
+    .ela-ingredients__benefit {
+      color: var(--ela-grey-dark, #333);
+    }
+    .ela-ingredients__text {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--ela-grey-dark, #333);
+    }
+  </style>
+{%- endif -%}

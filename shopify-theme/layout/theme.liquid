@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height">
+  <meta name="theme-color" content="#ffffff">
+
+  <title>
+    {%- if page_title == shop.name -%}
+      {{ page_title }}
+    {%- else -%}
+      {{ page_title }} – {{ shop.name }}
+    {%- endif -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <!-- Canonical -->
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Favicon -->
+  {%- if settings.favicon -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:type" content="website">
+  {%- if page_image -%}
+    <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+    <meta property="og:image:width" content="1200">
+  {%- endif -%}
+
+  <!-- Shopify head content -->
+  {{ content_for_header }}
+
+  <!-- ELA Custom CSS -->
+  {{ 'ela-custom.css' | asset_url | stylesheet_tag }}
+</head>
+
+<body>
+
+  <!-- ===================== HEADER / NAV ===================== -->
+  <header class="ela-header" role="banner" style="
+    position: sticky;
+    top: 0;
+    z-index: 800;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+  ">
+    <div style="
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    ">
+      <!-- Logo -->
+      <a
+        href="{{ routes.root_url }}"
+        class="ela-header__logo"
+        aria-label="{{ shop.name }}"
+        style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;font-weight:300;letter-spacing:0.1em;text-transform:uppercase;color:#000;text-decoration:none;"
+      >
+        {%- if settings.logo -%}
+          <img
+            src="{{ settings.logo | image_url: width: 200 }}"
+            alt="{{ shop.name }}"
+            style="max-height:40px;width:auto;"
+            loading="eager"
+          >
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+
+      <!-- Nav -->
+      <nav aria-label="Main navigation" style="display:flex;gap:28px;align-items:center;">
+        <a href="{{ routes.root_url }}" style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;text-decoration:none;">Home</a>
+        <a href="/collections/skincare" style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;text-decoration:none;">Skincare</a>
+        <a href="/collections/haircare" style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;text-decoration:none;">Haircare</a>
+        <a href="/pages/bundles" style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;text-decoration:none;">Bundles</a>
+      </nav>
+
+      <!-- Actions -->
+      <div style="display:flex;align-items:center;gap:16px;">
+        <!-- Hair Quiz trigger -->
+        <button
+          data-open-quiz
+          aria-label="Take the hair type quiz"
+          style="background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;min-height:44px;padding:0 8px;display:none;"
+          id="ela-quiz-nav-btn"
+        >
+          Quiz
+        </button>
+
+        <!-- Cart icon -->
+        <button
+          data-open-cart
+          aria-label="Open cart"
+          style="background:none;border:none;cursor:pointer;position:relative;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;"
+        >
+          <!-- Cart icon SVG -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="3" y1="6" x2="21" y2="6" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 10a4 4 0 01-8 0" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <!-- Cart count badge -->
+          <span
+            data-cart-count
+            style="
+              position:absolute;
+              top:4px;right:4px;
+              background:#000;color:#fff;
+              font-size:9px;font-weight:700;
+              width:16px;height:16px;
+              border-radius:50%;
+              display:none;
+              align-items:center;justify-content:center;
+              line-height:1;
+            "
+          >0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <main id="main-content" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  <!-- ===================== CART DRAWER ===================== -->
+  <div class="ela-cart-overlay" id="ela-cart-overlay" aria-hidden="true"></div>
+
+  <aside
+    class="ela-cart-drawer"
+    id="ela-cart-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Shopping cart"
+  >
+    <div class="ela-cart-drawer__header">
+      <h2 class="ela-cart-drawer__title">Your Cart</h2>
+      <button class="ela-cart-drawer__close" aria-label="Close cart">✕</button>
+    </div>
+
+    <!-- Shipping progress bar -->
+    <div class="ela-shipping-bar" aria-live="polite">
+      <p class="ela-shipping-bar__message">Add <strong>$50.00</strong> more for free shipping</p>
+      <div class="ela-shipping-bar__track">
+        <div class="ela-shipping-bar__fill" style="width:0%;"></div>
+      </div>
+    </div>
+
+    <!-- Cart items (populated by JS) -->
+    <div class="ela-cart-drawer__body">
+      <!-- Upsell block (hidden until qualifying item is in cart) -->
+      <div class="ela-upsell" style="display:none;">
+        <p class="ela-upsell__label">Complete Your Routine</p>
+        <div class="ela-upsell__body">
+          <div class="ela-upsell__text">
+            <strong>Hair Repair Bundle</strong>
+            Shampoo + Mask + Serum – save 17%
+          </div>
+          <a href="/pages/bundles" class="ela-btn ela-upsell__btn">View Bundle</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ela-cart-drawer__footer">
+      <div class="ela-cart-drawer__subtotal">
+        <span>Subtotal</span>
+        <span class="ela-cart-drawer__subtotal-value">$0.00</span>
+      </div>
+      <a href="/checkout" class="ela-btn ela-cart-drawer__checkout">
+        Checkout
+      </a>
+    </div>
+  </aside>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="ela-footer" role="contentinfo">
+    <div class="ela-footer__grid">
+      <!-- Brand -->
+      <div>
+        <p class="ela-footer__brand-name">ELA Professional</p>
+        <p class="ela-footer__tagline">
+          Professional results for everyday beauty.<br>
+          Professional skincare &amp; haircare for all skin and hair types.
+        </p>
+      </div>
+
+      <!-- Shop -->
+      <div>
+        <p class="ela-footer__heading">Shop</p>
+        <ul class="ela-footer__links">
+          <li><a href="/collections/skincare">Skincare</a></li>
+          <li><a href="/collections/haircare">Haircare</a></li>
+          <li><a href="/pages/bundles">Bundles</a></li>
+          <li><a href="/collections/all">All Products</a></li>
+        </ul>
+      </div>
+
+      <!-- Help -->
+      <div>
+        <p class="ela-footer__heading">Help</p>
+        <ul class="ela-footer__links">
+          <li><a href="/pages/contact">Contact Us</a></li>
+          <li><a href="/pages/shipping-returns">Shipping &amp; Returns</a></li>
+          <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div>
+        <p class="ela-footer__heading">Stay in the Loop</p>
+        <p style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:14px;font-weight:300;">
+          New arrivals, skincare tips, and exclusive offers.
+        </p>
+        {%- form 'customer', id: 'ela-newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="ela-newsletter-form">
+            <label for="ela-newsletter-email" class="visually-hidden">Email address</label>
+            <input
+              id="ela-newsletter-email"
+              class="ela-newsletter-input"
+              type="email"
+              name="contact[email]"
+              placeholder="Your email"
+              required
+              autocomplete="email"
+            >
+            <button type="submit" class="ela-newsletter-btn" aria-label="Subscribe">
+              →
+            </button>
+          </div>
+          {%- if form.posted_successfully? -%}
+            <p style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:8px;">✓ Thank you for subscribing!</p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+
+    <div class="ela-footer__bottom">
+      <p class="ela-footer__copy">
+        © {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
+      </p>
+      <p class="ela-footer__copy">
+        ELA Professional – Professional results for everyday beauty.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <!-- Cart progress & drawer logic -->
+  <script src="{{ 'ela-cart-progress.js' | asset_url }}" defer></script>
+  <!-- Hair type quiz popup -->
+  <script src="{{ 'ela-quiz.js' | asset_url }}" defer></script>
+
+  <!-- Show quiz button on haircare pages only -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var isHairPage = window.location.pathname.indexOf('haircare') !== -1 ||
+                       window.location.pathname.indexOf('hair') !== -1;
+      var quizBtn = document.getElementById('ela-quiz-nav-btn');
+      if (quizBtn) quizBtn.style.display = isHairPage ? 'flex' : 'none';
+    });
+  </script>
+
+</body>
+</html>

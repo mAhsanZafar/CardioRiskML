@@ -1,0 +1,1451 @@
+/* ============================================================
+   ELA Professional – Custom CSS
+   Color system: 70% white background, 30% black accents
+   ============================================================ */
+
+/* ---------- Google Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+  --ela-white:       #FFFFFF;
+  --ela-black:       #000000;
+  --ela-grey-light:  #E5E5E5;
+  --ela-grey-mid:    #999999;
+  --ela-grey-dark:   #333333;
+  --ela-font-display: 'Cormorant Garamond', Georgia, serif;
+  --ela-font-body:    'Montserrat', Helvetica, Arial, sans-serif;
+  --ela-transition:   0.25s ease;
+  --ela-radius:       0px; /* sharp edges = clinical/luxury */
+  --ela-free-shipping-threshold: 5000; /* cents = $50.00 */
+}
+
+/* ---------- Base Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--ela-white);
+  color: var(--ela-black);
+  font-family: var(--ela-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ela-font-display);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--ela-black);
+  margin: 0 0 0.75em;
+}
+
+a {
+  color: var(--ela-black);
+  text-decoration: none;
+  transition: opacity var(--ela-transition);
+}
+
+a:hover {
+  opacity: 0.65;
+}
+
+/* ---------- Buttons ---------- */
+.ela-btn,
+.button,
+.btn {
+  display: inline-block;
+  background-color: var(--ela-black);
+  color: var(--ela-white) !important;
+  font-family: var(--ela-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border: 2px solid var(--ela-black);
+  border-radius: var(--ela-radius);
+  cursor: pointer;
+  transition: background-color var(--ela-transition), color var(--ela-transition);
+  white-space: nowrap;
+  min-height: 48px; /* thumb-friendly */
+}
+
+.ela-btn:hover,
+.button:hover,
+.btn:hover {
+  background-color: var(--ela-white);
+  color: var(--ela-black) !important;
+}
+
+.ela-btn--outline {
+  background-color: transparent;
+  color: var(--ela-black) !important;
+}
+
+.ela-btn--outline:hover {
+  background-color: var(--ela-black);
+  color: var(--ela-white) !important;
+}
+
+/* ---------- Dividers ---------- */
+hr,
+.ela-divider {
+  border: none;
+  border-top: 1px solid var(--ela-grey-light);
+  margin: 2rem 0;
+}
+
+/* ============================================================
+   HERO BANNER
+   ============================================================ */
+.ela-hero {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--ela-black);
+}
+
+.ela-hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.55;
+}
+
+.ela-hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  max-width: 700px;
+}
+
+.ela-hero__eyebrow {
+  font-family: var(--ela-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ela-white);
+  margin-bottom: 1rem;
+}
+
+.ela-hero__headline {
+  font-family: var(--ela-font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 300;
+  color: var(--ela-white);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.ela-hero__sub {
+  font-family: var(--ela-font-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 2.5rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ela-hero__cta {
+  display: inline-block;
+  background-color: var(--ela-white);
+  color: var(--ela-black) !important;
+  font-family: var(--ela-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 16px 48px;
+  border: 2px solid var(--ela-white);
+  transition: background-color var(--ela-transition), color var(--ela-transition);
+  min-height: 52px;
+}
+
+.ela-hero__cta:hover {
+  background-color: transparent;
+  color: var(--ela-white) !important;
+}
+
+/* ============================================================
+   TRUST BAR
+   ============================================================ */
+.ela-trust-bar {
+  background-color: var(--ela-black);
+  color: var(--ela-white);
+  padding: 14px 24px;
+}
+
+.ela-trust-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ela-trust-bar__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ela-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ela-trust-bar__icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  fill: var(--ela-white);
+}
+
+/* ============================================================
+   CATEGORY CARDS
+   ============================================================ */
+.ela-categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background-color: var(--ela-grey-light);
+}
+
+.ela-category-card {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  display: block;
+  background-color: var(--ela-black);
+}
+
+.ela-category-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease, opacity 0.4s ease;
+  opacity: 0.65;
+}
+
+.ela-category-card:hover .ela-category-card__image {
+  transform: scale(1.04);
+  opacity: 0.5;
+}
+
+.ela-category-card__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.ela-category-card__title {
+  font-family: var(--ela-font-display);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 300;
+  color: var(--ela-white);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.ela-category-card__cta {
+  font-family: var(--ela-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ela-white);
+  border-bottom: 1px solid var(--ela-white);
+  padding-bottom: 2px;
+}
+
+/* ============================================================
+   FEATURED PRODUCTS GRID
+   ============================================================ */
+.ela-products-section {
+  padding: 80px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.ela-section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.ela-section-title {
+  font-family: var(--ela-font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.ela-section-sub {
+  font-size: 13px;
+  color: var(--ela-grey-mid);
+  letter-spacing: 0.05em;
+}
+
+.ela-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.ela-product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.ela-product-card__image-wrap {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  margin-bottom: 16px;
+}
+
+.ela-product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  loading: lazy;
+}
+
+.ela-product-card:hover .ela-product-card__image {
+  transform: scale(1.04);
+}
+
+.ela-product-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: var(--ela-black);
+  color: var(--ela-white);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+}
+
+.ela-product-card__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ela-product-card__collection {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ela-grey-mid);
+  margin-bottom: 4px;
+}
+
+.ela-product-card__title {
+  font-family: var(--ela-font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.ela-product-card__price {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.ela-product-card__btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* ============================================================
+   PRODUCT PAGE
+   ============================================================ */
+.ela-product-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* Image gallery */
+.ela-gallery {
+  position: relative;
+}
+
+.ela-gallery__main {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  cursor: zoom-in;
+  background-color: #f5f5f5;
+  margin-bottom: 12px;
+}
+
+.ela-gallery__main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.ela-gallery__main:hover img {
+  transform: scale(1.15);
+}
+
+.ela-gallery__thumbs {
+  display: flex;
+  gap: 8px;
+}
+
+.ela-gallery__thumb {
+  width: 72px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background-color: #f5f5f5;
+  transition: border-color var(--ela-transition);
+  flex-shrink: 0;
+}
+
+.ela-gallery__thumb:hover,
+.ela-gallery__thumb.is-active {
+  border-color: var(--ela-black);
+}
+
+.ela-gallery__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Product info panel */
+.ela-product-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.ela-product-info__collection {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ela-grey-mid);
+  margin-bottom: 8px;
+}
+
+.ela-product-info__title {
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 300;
+  margin-bottom: 12px;
+}
+
+.ela-product-info__price {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.ela-product-info__short-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ela-grey-dark);
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--ela-grey-light);
+}
+
+/* Add to cart */
+.ela-atc-wrap {
+  margin-bottom: 24px;
+}
+
+.ela-atc-btn {
+  width: 100%;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  padding: 18px;
+  min-height: 56px;
+}
+
+/* Sticky ATC on mobile */
+.ela-sticky-atc {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  padding: 12px 16px;
+  background-color: var(--ela-white);
+  border-top: 1px solid var(--ela-grey-light);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+.ela-sticky-atc__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ela-sticky-atc__title {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ela-sticky-atc__btn {
+  flex-shrink: 0;
+  min-width: 140px;
+  font-size: 12px;
+  padding: 14px 20px;
+}
+
+/* Accordion (ingredients / how to use) */
+.ela-accordion {
+  border-top: 1px solid var(--ela-grey-light);
+  margin-top: 28px;
+}
+
+.ela-accordion__item {
+  border-bottom: 1px solid var(--ela-grey-light);
+}
+
+.ela-accordion__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--ela-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ela-black);
+  text-align: left;
+}
+
+.ela-accordion__icon {
+  font-size: 18px;
+  line-height: 1;
+  transition: transform var(--ela-transition);
+  flex-shrink: 0;
+}
+
+.ela-accordion__item.is-open .ela-accordion__icon {
+  transform: rotate(45deg);
+}
+
+.ela-accordion__body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+
+.ela-accordion__item.is-open .ela-accordion__body {
+  max-height: 600px;
+  padding-bottom: 20px;
+}
+
+.ela-accordion__content {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--ela-grey-dark);
+}
+
+/* ============================================================
+   CART DRAWER
+   ============================================================ */
+.ela-cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100vw);
+  background-color: var(--ela-white);
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -8px 0 40px rgba(0,0,0,0.12);
+}
+
+.ela-cart-drawer.is-open {
+  transform: translateX(0);
+}
+
+.ela-cart-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 899;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.ela-cart-overlay.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.ela-cart-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--ela-grey-light);
+  flex-shrink: 0;
+}
+
+.ela-cart-drawer__title {
+  font-family: var(--ela-font-display);
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin: 0;
+}
+
+.ela-cart-drawer__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ela-black);
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Shipping progress bar */
+.ela-shipping-bar {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--ela-grey-light);
+  flex-shrink: 0;
+}
+
+.ela-shipping-bar__message {
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.ela-shipping-bar__message strong {
+  font-weight: 600;
+}
+
+.ela-shipping-bar__track {
+  height: 3px;
+  background-color: var(--ela-grey-light);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ela-shipping-bar__fill {
+  height: 100%;
+  background-color: var(--ela-black);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* Cart body */
+.ela-cart-drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ela-cart-item {
+  display: flex;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--ela-grey-light);
+}
+
+.ela-cart-item__image {
+  width: 80px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: #f5f5f5;
+}
+
+.ela-cart-item__info {
+  flex: 1;
+}
+
+.ela-cart-item__title {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.ela-cart-item__price {
+  font-size: 13px;
+  color: var(--ela-grey-mid);
+  margin-bottom: 10px;
+}
+
+.ela-cart-item__qty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ela-cart-item__qty-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--ela-grey-light);
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  transition: border-color var(--ela-transition);
+}
+
+.ela-cart-item__qty-btn:hover {
+  border-color: var(--ela-black);
+}
+
+.ela-cart-item__qty-num {
+  font-size: 13px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Upsell block */
+.ela-upsell {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--ela-black);
+  background-color: var(--ela-white);
+}
+
+.ela-upsell__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: var(--ela-grey-mid);
+}
+
+.ela-upsell__body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ela-upsell__text {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ela-upsell__text strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ela-upsell__btn {
+  font-size: 11px;
+  padding: 10px 16px;
+  white-space: nowrap;
+  min-height: 44px;
+}
+
+/* Cart footer */
+.ela-cart-drawer__footer {
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--ela-grey-light);
+  flex-shrink: 0;
+}
+
+.ela-cart-drawer__subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.ela-cart-drawer__checkout {
+  width: 100%;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  padding: 18px;
+  min-height: 56px;
+}
+
+/* ============================================================
+   BUNDLES PAGE
+   ============================================================ */
+.ela-bundles-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 24px 100px;
+}
+
+.ela-bundles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.ela-bundle-card {
+  border: 1px solid var(--ela-grey-light);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ela-bundle-card__images {
+  display: flex;
+  gap: 8px;
+}
+
+.ela-bundle-card__image {
+  flex: 1;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  background-color: #f5f5f5;
+}
+
+.ela-bundle-card__title {
+  font-size: 1.4rem;
+  font-weight: 300;
+  margin: 0;
+}
+
+.ela-bundle-card__includes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ela-bundle-card__includes li {
+  font-size: 13px;
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ela-grey-dark);
+}
+
+.ela-bundle-card__includes li::before {
+  content: '—';
+  color: var(--ela-grey-mid);
+  flex-shrink: 0;
+}
+
+.ela-bundle-card__pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.ela-bundle-card__price {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.ela-bundle-card__original {
+  font-size: 1rem;
+  color: var(--ela-grey-mid);
+  text-decoration: line-through;
+}
+
+.ela-bundle-card__save {
+  background-color: var(--ela-black);
+  color: var(--ela-white);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+}
+
+.ela-bundle-card__btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* ============================================================
+   HAIR TYPE QUIZ POPUP
+   ============================================================ */
+.ela-quiz-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.ela-quiz-overlay.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.ela-quiz {
+  background-color: var(--ela-white);
+  width: 100%;
+  max-width: 520px;
+  padding: 40px 32px;
+  position: relative;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.ela-quiz-overlay.is-open .ela-quiz {
+  transform: translateY(0);
+}
+
+.ela-quiz__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ela-black);
+}
+
+.ela-quiz__eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ela-grey-mid);
+  margin-bottom: 8px;
+}
+
+.ela-quiz__title {
+  font-size: 1.6rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+
+.ela-quiz__subtitle {
+  font-size: 13px;
+  color: var(--ela-grey-mid);
+  margin-bottom: 28px;
+}
+
+.ela-quiz__progress {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.ela-quiz__progress-dot {
+  height: 3px;
+  flex: 1;
+  background-color: var(--ela-grey-light);
+  transition: background-color 0.3s ease;
+}
+
+.ela-quiz__progress-dot.is-active {
+  background-color: var(--ela-black);
+}
+
+.ela-quiz__question {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.ela-quiz__options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.ela-quiz__option {
+  padding: 14px 16px;
+  border: 1px solid var(--ela-grey-light);
+  cursor: pointer;
+  font-size: 13px;
+  transition: border-color var(--ela-transition), background-color var(--ela-transition);
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.ela-quiz__option:hover,
+.ela-quiz__option.is-selected {
+  border-color: var(--ela-black);
+  background-color: #f9f9f9;
+}
+
+.ela-quiz__option.is-selected {
+  background-color: var(--ela-black);
+  color: var(--ela-white);
+}
+
+.ela-quiz__step {
+  display: none;
+}
+
+.ela-quiz__step.is-active {
+  display: block;
+}
+
+.ela-quiz__result {
+  display: none;
+  text-align: center;
+}
+
+.ela-quiz__result.is-active {
+  display: block;
+}
+
+.ela-quiz__result-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.ela-quiz__result-title {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+
+.ela-quiz__result-text {
+  font-size: 13px;
+  color: var(--ela-grey-dark);
+  margin-bottom: 24px;
+}
+
+.ela-quiz__result-btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* ============================================================
+   BACK IN STOCK
+   ============================================================ */
+.ela-bis-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.ela-bis-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--ela-grey-light);
+  font-family: var(--ela-font-body);
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--ela-transition);
+  min-height: 48px;
+}
+
+.ela-bis-input:focus {
+  border-color: var(--ela-black);
+}
+
+.ela-bis-btn {
+  width: 100%;
+}
+
+.ela-bis-success {
+  display: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ela-black);
+  padding: 12px;
+  border: 1px solid var(--ela-black);
+  text-align: center;
+}
+
+/* ============================================================
+   REVIEWS
+   ============================================================ */
+.ela-reviews-section {
+  padding: 64px 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  border-top: 1px solid var(--ela-grey-light);
+}
+
+.ela-reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--ela-grey-light);
+}
+
+.ela-reviews-summary__score {
+  font-size: 4rem;
+  font-weight: 300;
+  font-family: var(--ela-font-display);
+  line-height: 1;
+}
+
+.ela-reviews-summary__stars {
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.ela-reviews-summary__count {
+  font-size: 12px;
+  color: var(--ela-grey-mid);
+}
+
+.ela-review-card {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--ela-grey-light);
+}
+
+.ela-review-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.ela-review-card__author {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ela-review-card__date {
+  font-size: 12px;
+  color: var(--ela-grey-mid);
+}
+
+.ela-review-card__stars {
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.ela-review-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.ela-review-card__body {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ela-grey-dark);
+}
+
+.ela-review-card__photo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-top: 12px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.ela-footer {
+  background-color: var(--ela-black);
+  color: var(--ela-white);
+  padding: 60px 24px 32px;
+}
+
+.ela-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ela-footer__brand-name {
+  font-family: var(--ela-font-display);
+  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--ela-white);
+  margin-bottom: 12px;
+}
+
+.ela-footer__tagline {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.6);
+  max-width: 260px;
+}
+
+.ela-footer__heading {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 16px;
+}
+
+.ela-footer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ela-footer__links a {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 300;
+  transition: color var(--ela-transition);
+}
+
+.ela-footer__links a:hover {
+  color: var(--ela-white);
+  opacity: 1;
+}
+
+/* Newsletter */
+.ela-newsletter-form {
+  display: flex;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.ela-newsletter-input {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px 14px;
+  color: var(--ela-white);
+  font-family: var(--ela-font-body);
+  font-size: 12px;
+  outline: none;
+  min-height: 48px;
+}
+
+.ela-newsletter-input::placeholder {
+  color: rgba(255,255,255,0.4);
+}
+
+.ela-newsletter-btn {
+  background-color: var(--ela-white);
+  color: var(--ela-black) !important;
+  border: none;
+  padding: 0 18px;
+  font-family: var(--ela-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 48px;
+  transition: background-color var(--ela-transition), color var(--ela-transition);
+}
+
+.ela-newsletter-btn:hover {
+  background-color: var(--ela-grey-light);
+}
+
+.ela-footer__bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ela-footer__copy {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 300;
+}
+
+/* ============================================================
+   RESPONSIVE – MOBILE FIRST
+   ============================================================ */
+@media (max-width: 1024px) {
+  .ela-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .ela-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hero */
+  .ela-hero {
+    min-height: 75vh;
+  }
+
+  /* Categories: stack */
+  .ela-categories {
+    grid-template-columns: 1fr;
+  }
+
+  .ela-category-card {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Products */
+  .ela-products-section {
+    padding: 48px 16px;
+  }
+
+  /* Product layout: stack */
+  .ela-product-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 24px 16px 100px;
+  }
+
+  /* Sticky ATC */
+  .ela-sticky-atc {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Hide main ATC when sticky is showing */
+  .ela-atc-wrap {
+    display: none;
+  }
+
+  /* Bundles */
+  .ela-bundles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer */
+  .ela-footer__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .ela-footer__bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Trust bar */
+  .ela-trust-bar__inner {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ela-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .ela-products-section {
+    padding: 40px 12px;
+  }
+
+  .ela-bundle-card {
+    padding: 20px;
+  }
+
+  .ela-quiz {
+    padding: 28px 20px;
+  }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+.ela-text-center { text-align: center; }
+.ela-mt-0 { margin-top: 0; }
+.ela-mb-0 { margin-bottom: 0; }
